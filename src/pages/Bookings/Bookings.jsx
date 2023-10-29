@@ -79,7 +79,7 @@ const Bookings = () => {
                     <tbody>
                         {
                             bookings.map(booking => <BookingRow
-                            key={bookings._id}
+                            key={booking._id}
                             booking={booking}
                             handleDelete ={handleDelete}
                             handleBookingConfirm = {handleBookingConfirm}

@@ -1,11 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import loginSvg from '../../assets/images/login/login.svg'
 import { useContext } from 'react';
 import { AuthContext } from '../../Provider/AuthProvider';
+import axios from 'axios';
 
 const Login = () => {
 
-    const { signInUser } = useContext(AuthContext); 
+    const { signInUser } = useContext(AuthContext);
+
+    const location = useLocation()
+    const navigate = useNavigate()
 
     const hangleLogin = event => {
         event.preventDefault();
@@ -15,13 +19,20 @@ const Login = () => {
         const person = { email, password }
         console.log(person);
         signInUser(email, password)
-        .then(result => {
-            const user = result.user; 
-            console.log(user);
-        })
-        .catch(error => {
-            console.error(error)
-        })
+            .then(result => {
+                const loggedInUser = result.user;
+                console.log(loggedInUser);
+                const user = { email }
+                // navigate(location?.state ? location?.state : '/')
+                // get access token
+                axios.post('http://localhost:5000/jwt', user)
+                .then(res => {
+                    console.log(res.data);
+                })
+            })
+            .catch(error => {
+                console.error(error)
+            })
     }
 
     return (
